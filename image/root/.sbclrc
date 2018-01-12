@@ -1,4 +1,4 @@
-;;;; .sbclrc
+;;;; .sbclrc  -*- mode: lisp; -*-
 
 #+sbcl
 (progn
