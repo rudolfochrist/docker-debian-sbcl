@@ -6,9 +6,10 @@ LABEL email="rudolfo.christ@gmail.com"
 WORKDIR /root
 
 # Build arguments
-ARG SBCL_VERSION=1.4.3
-ARG SBCL_SHA256_SUM=38e8379f6371da2d59ef05c08fc7d558650ac44e4f5cc3956b62640b0d027291
-ARG SBCL_TAR=sbcl-$SBCL_VERSION-x86-linux-binary.tar
+ARG SBCL_VERSION=1.4.2
+ARG SBCL_SHA256_SUM=c0f3767616e6c5383e82682cb45488a861a6ae6c5acbb79e5022bc1e60a1b45b
+ARG SBCL_INSTALL_DIR=sbcl-$SBCL_VERSION-x86-64-linux
+ARG SBCL_TAR=$SBCL_INSTALL_DIR-binary.tar
 ARG SBCL_BZIP=$SBCL_TAR.bz2
 
 # Deps
@@ -23,9 +24,9 @@ RUN wget http://prdownloads.sourceforge.net/sbcl/$SBCL_BZIP &&\
     bzip2 -d $SBCL_BZIP &&\
     echo "$SBCL_SHA256_SUM $SBCL_TAR" | sha256sum -c - &&\
     tar xf $SBCL_TAR &&\
-    cd sbcl-$SBCL_VERSION-x86-linux &&\
+    cd $SBCL_INSTALL_DIR &&\
     sh install.sh &&\
-    rm -rf /root/sbcl-$SBCL_VERSION-x86-64-linux-binary.tar.bz2 /root/sbcl-$SBCL_VERSION-x86-64-linux
+    rm -rf $SBCL_TAR $SBCL_INSTALL_DIR
 
 # copy files
 COPY image /
