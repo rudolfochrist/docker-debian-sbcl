@@ -1,5 +1,7 @@
 ;;;; .sbclrc  -*- mode: lisp; -*-
 
+(require 'asdf)
+
 #+sbcl
 (progn
   (ignore-errors (require 'sb-aclrepl))
@@ -29,3 +31,20 @@
 
 #+aclrepl (sb-aclrepl:alias ("exit" 1 "exit REPL") (&optional (status 0))
                             (ovwrt-exit-cmd status))
+
+;;; machine information
+(defun machine-info ()
+  "Print this host's details."
+  (format t "~@{~A: ~A~^~%~}~%"
+          "Machine Information"  ""
+          "-- Arch"  (machine-type)
+          "-- CPU"  (machine-version)
+          "-- OS" (software-type)
+          "-- Version" (software-version)
+          "-- Hostname"  (machine-instance)
+          "-- HOME"  (user-homedir-pathname)
+          "-- Site Name"  (list (short-site-name) (long-site-name))
+          "Lisp Information"  ""
+          "-- Implementation"  (lisp-implementation-type)
+          "-- Version"  (lisp-implementation-version)))
+
