@@ -2,6 +2,12 @@
 
 (require 'asdf)
 
+;;; quicklisp
+(let ((ql-setup (pathname "/usr/local/lib/quicklisp/setup.lisp")))
+  (when (probe-file ql-setup)
+    (load ql-setup)))
+
+;;; Allegro CL REPL
 #+sbcl
 (progn
   (ignore-errors (require 'sb-aclrepl))
@@ -31,6 +37,10 @@
 
 #+aclrepl (sb-aclrepl:alias ("exit" 1 "exit REPL") (&optional (status 0))
                             (ovwrt-exit-cmd status))
+
+#+(and aclrepl quicklisp)
+(sb-aclrepl:alias ("ql" 1 "Load system") (system)
+                  (ql:quickload system))
 
 ;;; machine information
 (defun machine-info ()

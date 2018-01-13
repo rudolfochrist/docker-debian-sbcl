@@ -12,11 +12,14 @@ ARG SBCL_INSTALL_DIR=sbcl-$SBCL_VERSION-x86-64-linux
 ARG SBCL_TAR=$SBCL_INSTALL_DIR-binary.tar
 ARG SBCL_BZIP=$SBCL_TAR.bz2
 
+ARG QL_SHA256SUM=4a7a5c2aebe0716417047854267397e24a44d0cce096127411e9ce9ccfeb2c17
+
 # Deps
 RUN apt-get update &&\
     apt-get install -y \
+        build-essential \
         wget \
-        build-essential &&\
+        &&\
     rm -rf /var/lib/apt/lists/*
 
 # Install SBCL
@@ -28,7 +31,17 @@ RUN wget http://prdownloads.sourceforge.net/sbcl/$SBCL_BZIP &&\
     sh install.sh &&\
     rm -rf $SBCL_TAR $SBCL_INSTALL_DIR
 
-# copy files
+# Install Quicklisp
+RUN mkdir -p /usr/local/quicklisp &&\
+    wget https://beta.quicklisp.org/quicklisp.lisp &&\
+    echo "$QL_SHA256SUM quicklisp.lisp" | sha256sum -c - &&\
+    sbcl --load quicklisp.lisp \
+         --eval '(quicklisp-quickstart:install :path "/usr/local/lib/quicklisp")'
+
+# Copy files
 COPY image /
 
+# Volumes
+VOLUME /usr/local/lib/quicklisp
 ENTRYPOINT ["/usr/local/bin/sbcl"]
+
