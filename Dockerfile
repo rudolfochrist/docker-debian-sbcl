@@ -40,6 +40,7 @@ RUN mkdir -p /usr/local/quicklisp &&\
 
 # Copy files
 COPY image /
+COPY version .
 
 # Volumes
 VOLUME /usr/local/lib/quicklisp
