@@ -11,11 +11,11 @@ git checkout master
 git pull
 
 # Bump version
-version=$(perl -pe 's/b(\d)+/$1+1/e' < version)
-cat $version > version
+version=$(perl -pe 's/b(\d)+/b.($1+1)/e' < version)
+echo $version > version
 
 # run build
-./buid.sh
+./build.sh
 
 # Tag release
 git add -A
