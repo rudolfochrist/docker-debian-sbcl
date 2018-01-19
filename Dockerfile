@@ -17,9 +17,12 @@ ARG QL_SHA256SUM=4a7a5c2aebe0716417047854267397e24a44d0cce096127411e9ce9ccfeb2c1
 # Deps
 RUN apt-get update &&\
     apt-get install -y \
-        build-essential \
-        wget \
-        &&\
+            bzip2 \
+            git \
+            libssl-dev \
+            make \
+            wget \
+    &&\
     rm -rf /var/lib/apt/lists/*
 
 # Install SBCL
