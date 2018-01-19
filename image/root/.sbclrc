@@ -35,12 +35,22 @@
             (return-from ovwrt-exit-cmd))))))
   (sb-ext:exit :code status))
 
-#+aclrepl (sb-aclrepl:alias ("exit" 1 "exit REPL") (&optional (status 0))
-                            (ovwrt-exit-cmd status))
+#+aclrepl
+;;; This is super hackish.
+(let ((cmd (sb-aclrepl::find-cmd "exit")))
+  (setf (sb-aclrepl::cmd-table-entry-func cmd) #'ovwrt-exit-cmd)
+  (sb-aclrepl::%add-entry
+   cmd
+   (sb-aclrepl::cmd-table-entry-abbr-len cmd)))
+
 
 #+(and aclrepl quicklisp)
 (sb-aclrepl:alias ("ql" 1 "Load system") (system)
                   (ql:quickload system))
+
+#+(and aclrepl asdf)
+(sb-aclrepl:alias ("make" 1 "asdf:make system") (system)
+                  (asdf:make system))
 
 ;;; machine information
 (defun machine-info ()
