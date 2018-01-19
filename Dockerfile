@@ -45,7 +45,15 @@ RUN mkdir -p /usr/local/quicklisp &&\
 COPY image /
 COPY version .
 
+# Environment
+ENV XDG_CACHE_HOME=/var/cache
+ENV CL_SOURCE_REGISTRY=/opt/common-lisp//
+
 # Volumes
 VOLUME /usr/local/lib/quicklisp
+VOLUME /var/cache
+VOLUME /opt/common-lisp
+
+# Start Lisp
 ENTRYPOINT ["/usr/local/bin/sbcl"]
 
