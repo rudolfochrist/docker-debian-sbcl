@@ -32,6 +32,7 @@ RUN wget http://prdownloads.sourceforge.net/sbcl/$SBCL_BZIP &&\
     tar xf $SBCL_TAR &&\
     cd $SBCL_INSTALL_DIR &&\
     sh install.sh &&\
+    cd &&\
     rm -rf $SBCL_TAR $SBCL_INSTALL_DIR
 
 # Install Quicklisp
@@ -39,7 +40,8 @@ RUN mkdir -p /usr/local/quicklisp &&\
     wget https://beta.quicklisp.org/quicklisp.lisp &&\
     echo "$QL_SHA256SUM quicklisp.lisp" | sha256sum -c - &&\
     sbcl --load quicklisp.lisp \
-         --eval '(quicklisp-quickstart:install :path "/usr/local/lib/quicklisp")'
+         --eval '(quicklisp-quickstart:install :path "/usr/local/lib/quicklisp")' &&\
+    rm quicklisp.lisp
 
 # Copy files
 COPY image /
@@ -56,4 +58,3 @@ VOLUME /opt/common-lisp
 
 # Start Lisp
 ENTRYPOINT ["/usr/local/bin/sbcl"]
-
